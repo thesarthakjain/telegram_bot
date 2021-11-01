@@ -4,6 +4,6 @@
 
 ## Instructions to run:
 
-- Install the requirements: `$pip install -r requirements.txt`
+- Install the requirements: `$pip3 install -r requirements.txt`
 - Run the bot: `$python3 bot.py`
 - Stop the bot: `ctrl + c`

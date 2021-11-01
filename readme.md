@@ -1,7 +1,6 @@
 <p align="center">
 	<h1 align="center"> Telegram Bot </h1>
 </p>
-<br>
 
 ## Instructions to run:
 

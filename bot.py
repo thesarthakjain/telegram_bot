@@ -1,12 +1,9 @@
-import telegram
-from telegram.ext import Updater
-from telegram.ext import CommandHandler
+import os
 import logging
-from telegram.ext import Filters
-from telegram.ext.messagehandler import MessageHandler
 import requests
 import json
-import os
+from telegram.ext import Updater, CommandHandler, Filters
+from telegram.ext.messagehandler import MessageHandler
 from datetime import datetime
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -49,9 +46,8 @@ def unknown(update, context):
 
 def list(update, context):
     print("list command used")
-    update.message.reply_text("Listing the available files")
+    update.message.reply_text("Listing the available files\nSNo.     File Name")
     items_list = os.listdir('./saved')
-    update.message.reply_text("SNo.     File Name")
     for item in items_list:
         update.message.reply_text(f'{items_list.index(item)}    {item}')
 
@@ -98,7 +94,10 @@ def photo_handler (update, context):
     json_response = json.loads(response.content) 
     #set name of the file as current datetime 
     file_name = str(datetime.now())
-    file_name = "".join(file_name.split())
+    file_name = "".join(file_name.split('-'))
+    file_name = "-".join(file_name.split(' '))
+    file_name = "".join(file_name.split(':'))
+    file_name = file_name.split('.')[0]
     #get file_content
     get_file_content_api_url = f'https://api.telegram.org/file/bot{token}/' + '{file_path}'
     response = requests.get(url=get_file_content_api_url.format(file_path=json_response['result']['file_path']))
@@ -169,5 +168,3 @@ disp.add_handler(MessageHandler(Filters.text,unknown))
 updater.start_polling()
 print("Bot is online!")
 updater.idle()
-#print("")
-#update.message.reply_text("")

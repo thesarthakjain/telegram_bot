@@ -5,13 +5,13 @@ import json
 from telegram.ext import Updater, CommandHandler, Filters
 from telegram.ext.messagehandler import MessageHandler
 from datetime import datetime
+import yaml
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
-#get token
-f = open('token_file','r')
-token = f.readline()
-f.close()
+#config.yaml
+config = yaml.load(open('./config.yaml').read(), Loader=yaml.FullLoader)
+token = config['token']
 
 ################
 # bot commands # 

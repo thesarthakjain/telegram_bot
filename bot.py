@@ -13,9 +13,9 @@ f = open('token_file','r')
 token = f.readline()
 f.close()
 
-
-# # # # # # bot commands # # # # # # 
-
+################
+# bot commands # 
+################
 
 def start(update, context):
     print("start command used")
@@ -54,19 +54,18 @@ def list(update, context):
 def print_file(update, context):
     inp=int(context.args[0])
     print("print command used")
-    print(inp)
     items_list = os.listdir('./saved')
     
     for item in items_list:
-        print(item)
         if items_list.index(item)==inp:
             os.system(f'lp ./saved/{item}')
             break
     update.message.reply_text(f'printing {item}')
+    print(f'printed {item}')
 
-
-# # # # # # download file handler functions # # # # # #
-
+###################################
+# download file handler functions #
+###################################
 
 def doc_handler (update, context):
     print("recieved doc")
@@ -141,9 +140,9 @@ def audio_handler (update, context):
     print("saved audio")
     update.message.reply_text("saved audio")
 
-
-# # # # # # add command handlers to dispatcher # # # # # # 
-
+######################################
+# add command handlers to dispatcher # 
+######################################
 
 updater = Updater(token, use_context=True)
 disp = updater.dispatcher

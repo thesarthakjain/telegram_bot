@@ -12,6 +12,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 #config.yaml
 config = yaml.load(open('./config.yaml').read(), Loader=yaml.FullLoader)
 token = config['token']
+trusted_users = config['trusted_users']
 
 ################
 # bot commands # 
@@ -37,13 +38,6 @@ def contact(update, context):
     print("contact command used")
     update.message.reply_text("@thesarthakjain")
 
-def unknown(update, context):
-    print("Unknown command used")
-    update.message.reply_text("""
-    I did not understand that.
-    Try using /help
-    """)
-
 def list(update, context):
     print("list command used")
     update.message.reply_text("Listing the available files\nSNo.     File Name")
@@ -62,6 +56,21 @@ def print_file(update, context):
             break
     update.message.reply_text(f'printing {item}')
     print(f'printed {item}')
+
+###################
+# other functions # 
+###################
+
+def unknown(update, context):
+    print("Unknown command used")
+    update.message.reply_text("""
+    I did not understand that.
+    Try using /help
+    """)
+
+def no_perm_file(update, context):
+    print("no_perm_file")
+    update.message.reply_text("You do not have permission to upload a file.")
 
 ###################################
 # download file handler functions #
@@ -153,10 +162,11 @@ disp.add_handler(CommandHandler("list", list))
 disp.add_handler(CommandHandler("print", print_file))
 
 #add file handlers to dispatcher
-disp.add_handler(MessageHandler(Filters.document, doc_handler))
-disp.add_handler(MessageHandler(Filters.photo, photo_handler))
-disp.add_handler(MessageHandler(Filters.video, video_handler))
-disp.add_handler(MessageHandler(Filters.audio, audio_handler))
+disp.add_handler(MessageHandler(Filters.document & Filters.chat(username=trusted_users), doc_handler))
+disp.add_handler(MessageHandler(Filters.photo & Filters.chat(username=trusted_users), photo_handler))
+disp.add_handler(MessageHandler(Filters.video & Filters.chat(username=trusted_users), video_handler))
+disp.add_handler(MessageHandler(Filters.audio & Filters.chat(username=trusted_users), audio_handler))
+disp.add_handler(MessageHandler(Filters.document | Filters.photo | Filters.video | Filters.audio, no_perm_file))
 
 
 #add message handlers to dispatcher

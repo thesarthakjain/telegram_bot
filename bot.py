@@ -9,10 +9,38 @@ import yaml
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
-#config.yaml
-config = yaml.load(open('./config.yaml').read(), Loader=yaml.FullLoader)
-token = config['token']
+# config.yaml
+# bot token
+try:
+    config = yaml.load(open('./config.yaml').read(), Loader=yaml.FullLoader)
+    token = config['token']
+except:
+    inp = input("Enter the bot token: ")
+    f = open('./config.yaml','w')
+    f.write(f'token: {inp}')
+    f.close()
+    config = yaml.load(open('./config.yaml').read(), Loader=yaml.FullLoader)
+    token = config['token']
+
+# bot_admin
+try:
+    bot_admin = config['bot_admin']
+except:
+    inp = input("Enter the username of bot admin: ")
+    f = open('./config.yaml','a')
+    f.write(f'\nbot_admin: {inp}')
+    f.write(f'\ntrusted_users: {inp}')
+    f.close()
+    config = yaml.load(open('./config.yaml').read(), Loader=yaml.FullLoader)
+bot_admin = config['bot_admin']
 trusted_users = config['trusted_users']
+
+
+# saved folder creation
+if os.path.isdir('./saved/') == False:
+    print("Creating ./saved/")
+    os.mkdir('./saved/')
+
 
 ################
 # bot commands # 
@@ -25,18 +53,29 @@ def start(update, context):
 def help(update, context):
     print("help command used")
     update.message.reply_text("""
-    The following commands are available:
+The following functions are available: 
+    
+FOR ALL USERS:
+/start - Welcome message.
+/help - This message.
+/contact - How to reach out to me.
+/list - List all the saved files.
+/print - Print a saved file.
 
-    /start      -> Welcome message.
-    /help       -> This message.
-    /contact    -> How to reach out to me.
-    /list       -> List all the saved files.
-    /print      -> Print a saved file.  Use -> /print <SNo of file in list>
-    """)
+FOR TRUSTED USERS:
+- Upload and save file.
+
+FOR BOT ADMIN:
+- add_trusted <username> - Add new trusted user to list.
+- add_admin <username> - Add new bot admin to list.
+""")
 
 def contact(update, context):
     print("contact command used")
-    update.message.reply_text("@thesarthakjain")
+    update.message.reply_text("""
+My telegram: @thesarthakjain
+Github: https://github.com/thesarthakjain/telegram_bot
+""")
 
 def list(update, context):
     print("list command used")
@@ -56,6 +95,42 @@ def print_file(update, context):
             break
     update.message.reply_text(f'printing {item}')
     print(f'printed {item}')
+
+##################
+# Admin messages #
+##################
+
+# Function that can be run by  'add_trusted <new username>' by admin to add new trusted users.
+def add_trusted(update, context):
+    inp = update.message.text.split()[1]
+    try:
+        # if list doesn't exist
+        li = trusted_users.split()
+    except:
+        # if list already exists
+        li = trusted_users
+    li.append(inp)
+    config['trusted_users']=li
+    with open("./config.yaml", 'w') as yamlfile:
+        data = yaml.dump(config, yamlfile)
+    print(f"Added user {inp} as trusted user.")
+    update.message.reply_text(f"Added user {inp} as trusted user.")
+
+# Function that can be run by  'add_admin <new username>' by admin to add new bot admins.
+def add_admin(update, context):
+    inp = update.message.text.split()[1]
+    try:
+        # if list doesn't exist
+        li = bot_admin.split()
+    except:
+        # if list already exists
+        li = bot_admin
+    li.append(inp)
+    config['bot_admin']=li
+    with open("./config.yaml", 'w') as yamlfile:
+        data = yaml.dump(config, yamlfile)
+    print(f"Added user {inp} as bot admin.")
+    update.message.reply_text(f"Added user {inp} as bot admin.")
 
 ###################
 # other functions # 
@@ -162,11 +237,14 @@ disp.add_handler(CommandHandler("list", list))
 disp.add_handler(CommandHandler("print", print_file))
 
 #add file handlers to dispatcher
-disp.add_handler(MessageHandler(Filters.document & Filters.chat(username=trusted_users), doc_handler))
-disp.add_handler(MessageHandler(Filters.photo & Filters.chat(username=trusted_users), photo_handler))
-disp.add_handler(MessageHandler(Filters.video & Filters.chat(username=trusted_users), video_handler))
-disp.add_handler(MessageHandler(Filters.audio & Filters.chat(username=trusted_users), audio_handler))
+#check if user is in admin or in trusted_users else fall
+disp.add_handler(MessageHandler(Filters.document & Filters.chat(username=bot_admin) | Filters.document & Filters.chat(username=trusted_users), doc_handler))
+disp.add_handler(MessageHandler(Filters.photo & Filters.chat(username=bot_admin) | Filters.photo & Filters.chat(username=trusted_users), photo_handler))
+disp.add_handler(MessageHandler(Filters.video & Filters.chat(username=bot_admin) | Filters.video & Filters.chat(username=trusted_users), video_handler))
+disp.add_handler(MessageHandler(Filters.audio & Filters.chat(username=bot_admin) | Filters.audio & Filters.chat(username=trusted_users), audio_handler))
 disp.add_handler(MessageHandler(Filters.document | Filters.photo | Filters.video | Filters.audio, no_perm_file))
+disp.add_handler(MessageHandler(Filters.chat(username=bot_admin) & Filters.regex('add_trusted'), add_trusted))
+disp.add_handler(MessageHandler(Filters.chat(username=bot_admin) & Filters.regex('add_admin'), add_admin))
 
 
 #add message handlers to dispatcher

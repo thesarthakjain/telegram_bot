@@ -6,6 +6,7 @@ from telegram.ext import Updater, CommandHandler, Filters
 from telegram.ext.messagehandler import MessageHandler
 from datetime import datetime
 import yaml
+import instaloader
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
@@ -61,6 +62,7 @@ FOR ALL USERS:
 /contact - How to reach out to me.
 /list - List all the saved files.
 /print - Print a saved file.
+/ig_dp - Download Instagram DP.
 
 FOR TRUSTED USERS:
 - Upload and save file.
@@ -95,6 +97,25 @@ def print_file(update, context):
             break
     update.message.reply_text(f'printing {item}')
     print(f'printed {item}')
+
+def ig_dp(update, context):
+    try:
+        username = update.message.text.split()[1]
+    except:
+        update.message.reply_text("How to use this command:\n/ig_dp <username>")
+        return
+    ig = instaloader.Instaloader()
+    ig.download_profile(username , profile_pic_only=True)
+    for file in os.listdir(f'./{username}'):
+        if file.endswith('.jpg'):
+            file_data = open(f'./{username}/{file}','rb')
+    context.bot.send_photo(chat_id=update.message.chat_id, photo=file_data, caption=f"{username}'s instagram DP.")
+    print(f"{username}'s instagram DP sent.")
+    file_data.close()
+    # remove the dp directory
+    for file in os.listdir(f'./{username}'):
+        os.remove(f'./{username}/{file}')
+    os.removedirs(username)
 
 ##################
 # Admin messages #
@@ -235,6 +256,7 @@ disp.add_handler(CommandHandler("help", help))
 disp.add_handler(CommandHandler("contact", contact))
 disp.add_handler(CommandHandler("list", list))
 disp.add_handler(CommandHandler("print", print_file))
+disp.add_handler(CommandHandler("ig_dp",ig_dp))
 
 #add file handlers to dispatcher
 #check if user is in admin or in trusted_users else fall

@@ -18,18 +18,19 @@ This is a telegram bot that can be used as a template for personal telegram bot.
 
 1. Make sure you are in the project directory: 
 
-        $cd /path/to/telegram_bot
+        cd /path/to/telegram_bot
         
 1. Install the requirements: 
 
-        $pip3 install -r requirements.txt
+        pip3 install -r requirements.txt
 
 1. Creating `config.yaml` file manually - This could be skipped as running the bot without this file will automatically generate it for you.
 
-	```yaml
-            token: <put the bot token here>
-            bot_admin: <bot admin username>
-            trusted_users: <trusted user's username>
+```yaml
+token: <put the bot token here>
+bot_admin: <bot admin username>
+trusted_users: <trusted user's username>
+```
 	
 1. The `bot.py` will also generate the `saved` folder inside the project directory.
 
@@ -37,7 +38,7 @@ This is a telegram bot that can be used as a template for personal telegram bot.
 
 1. Run the bot: 
 
-        $python3 bot.py
+        python3 bot.py
 
 1. To Stop the bot: 
 

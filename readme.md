@@ -4,46 +4,37 @@
 
 ## Description
 
-This is a Telegram Bot template that can used as template personal bot
+This is a telegram Bot that can be used as a template for personal telegram bot.
 
-## Telegram Api Token and username
+## Telegram API Token Generation
 
-1. First you will need create a telegram account and then search for the `@BotFather`. Then type the command - `/newbot`
+1. First you will need to create a personal telegram account and then search for `@BotFather`. Then type the command - `/newbot`
 
-1. After that given the `username` and save this username as it will be required later.
+1. After that enter the `username` for the bot.
 
-1. The `@BotFather` will give you the API Token for your bot.
+1. The `@BotFather` will give you the API Token for the bot.
 
 ## Getting started with the Telegram-Bot
 
-1. The project requires a `config.yaml` file. There are two ways to generate the same.
+1. Make sure you are in the project directory: 
 
-    - Manually  - create a `config.yaml` in the directory where `bot.py` lies, with the following contents.
-
-        ```yaml
-            token:  <put your bot <API token> here>
-            username: <put the bot <username> here>
-            bot_admin: <bot admin username>
-            trusted_users:  <any trusted user>
-        ```
-
-    - From the command Line
-
-        If you have not created the yaml file, you can also generate one from the command line. When you start the app without a `config.yaml` in the project directory, the command line will ask for few tokens( Those you have acquired from `@BotFather`)
-
-        Just give the tokens and username to the command line and it will generate the yaml file for you.
-
-1. The `bot.py` will also generate the saved folder inside the project directory.
-
-    - Here all the files will be stored that the trusted_users and admins upload.
-
-1. Now make sure that you are in the project directory if not then change working directory to project directory: 
-
-        cd /path/to/telegram_bot
+        $cd /path/to/telegram_bot
         
 1. Install the requirements: 
 
         $pip3 install -r requirements.txt
+
+1. Creating `config.yaml` file manually - This could be skipped as running the bot without this file will automatically generate it for you.
+
+    	```yaml
+            token: <put the bot token here>
+            bot_admin: <bot admin username>
+            trusted_users: <any trusted user>
+        ```
+	
+1. The `bot.py` will also generate the `saved` folder inside the project directory.
+
+    - Here all the files will be stored that the trusted_users and admins send to the bot via telegram.
 
 1. Run the bot: 
 
@@ -53,22 +44,22 @@ This is a Telegram Bot template that can used as template personal bot
 
         ctrl + c
 
-## Bot Function
+## Bot Functions
 
-#### There are 3 levels of privilage and has a bottom to top inclusive nature:
+#### There are 3 levels of privileges and has a bottom to top inclusive nature:
 1. Admin - AU
-1. Trusted user - TU
-1.  Non-Trusted user - U
+1. Trusted User - TU
+1. General User - U
 
-|command|Description|Privilage|
+|Function|Description|Privilege|
 |:---|:---|:---:|
 |   /start |   Welcome message |    U   |
 |   /help  |   help message    |   U   |
 |   /contact    |   Bot Admin Info  |   U   |
-|   /list   |   List all the saved files    |   U   |
 |   /ig_dp  |   Download Instagram DP   |   U   |
+|   /list   |   List all the saved files    |   U   |
 |   /print  |   Print a saved file  |    TU  |
-| add_trusted `<username>` | Add new trusted user to list| AU|
-| add_admin `<username>` | Add new bot admin to list| AU|
-|   upload a file | Uploads and saves the file | TU |
+| add_trusted `<username>` | Add new trusted user to list | AU|
+| add_admin `<username>` | Add new bot admin to list | AU|
+|   Upload a file | Downloads and saves the file locally | TU |
 

@@ -50,14 +50,14 @@ This is a telegram bot that can be used as a template for personal telegram bot.
 1. Trusted User - TU
 1. General User - U
 
-|Function|Description|Privilege|
+|Function Name|Description|Privilege|
 |:---|:---|:---:|
 |   /start |   Welcome message |    U   |
 |   /help  |   help message    |   U   |
 |   /contact    |   Bot Admin Info  |   U   |
-|   /ig_dp  |   Download Instagram DP   |   U   |
+|   /ig_dp `<insta username>` |   Download Instagram DP   |   U   |
 |   /list   |   List all the saved files    |   U   |
-|   /print  |   Print a saved file  |    TU  |
+|   /print `<S.No. of file in list>` |   Print a saved file  |    U  |
 | add_trusted `<username>` | Add new trusted user to list | AU|
 | add_admin `<username>` | Add new bot admin to list | AU|
 |   Upload a file | Downloads and saves the file locally | TU |

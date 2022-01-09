@@ -35,7 +35,7 @@ This is a Telegram Bot template that can used as template personal bot
 
 1. The `bot.py` will also generate the saved folder inside the project directory.
 
-<!-- TODO: write the need of the saved folder -->
+    - Here all the files will be stored that the trusted_users and admins upload.
 
 ## Bot Function
 

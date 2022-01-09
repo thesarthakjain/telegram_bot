@@ -37,6 +37,22 @@ This is a Telegram Bot template that can used as template personal bot
 
     - Here all the files will be stored that the trusted_users and admins upload.
 
+1. Now make sure that you are in the project directory if not then change working directory to project directory: 
+
+        cd /path/to/telegram_bot
+        
+1. Install the requirements: 
+
+        $pip3 install -r requirements.txt
+
+1. Run the bot: 
+
+        $python3 bot.py
+
+1. To Stop the bot: 
+
+        ctrl + c
+
 ## Bot Function
 
 #### There are 3 levels of privilage and has a bottom to top inclusive nature:
@@ -56,10 +72,3 @@ This is a Telegram Bot template that can used as template personal bot
 | add_admin `<username>` | Add new bot admin to list| AU|
 |   upload a file | Uploads and saves the file | TU |
 
-
-## Instructions to run:
-
-- Change working directory to project directory: `cd /path/to/telegram_bot`
-- Install the requirements: `$pip3 install -r requirements.txt`
-- Run the bot: `$python3 bot.py`
-- Stop the bot: `ctrl + c`

@@ -4,13 +4,13 @@
 
 ## Description
 
-This is a telegram Bot that can be used as a template for personal telegram bot.
+This is a telegram bot that can be used as a template for personal telegram bot.
 
 ## Telegram API Token Generation
 
 1. First you will need to create a personal telegram account and then search for `@BotFather`. Then type the command - `/newbot`
 
-1. After that enter the `username` for the bot.
+1. After that, enter the `username` for the bot.
 
 1. The `@BotFather` will give you the API Token for the bot.
 
@@ -26,11 +26,10 @@ This is a telegram Bot that can be used as a template for personal telegram bot.
 
 1. Creating `config.yaml` file manually - This could be skipped as running the bot without this file will automatically generate it for you.
 
-    	```yaml
+	```yaml
             token: <put the bot token here>
             bot_admin: <bot admin username>
-            trusted_users: <any trusted user>
-        ```
+            trusted_users: <trusted user's username>
 	
 1. The `bot.py` will also generate the `saved` folder inside the project directory.
 

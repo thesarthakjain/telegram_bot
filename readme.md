@@ -46,10 +46,10 @@ trusted_users: <trusted user's username>
 
 ## Bot Functions
 
-#### There are 3 levels of privileges and has a bottom to top inclusive nature:
-1. Admin - AU
-1. Trusted User - TU
+#### There are 3 levels of privileges for the functions:
 1. General User - U
+1. Trusted User - TU
+1. Admin - AU
 
 |Function Name|Description|Privilege|
 |:---|:---|:---:|
@@ -57,9 +57,8 @@ trusted_users: <trusted user's username>
 |   /help  |   help message    |   U   |
 |   /contact    |   Bot Admin Info  |   U   |
 |   /ig_dp `<insta username>` |   Download Instagram DP   |   U   |
-|   /list   |   List all the saved files    |   U   |
-|   /print `<S.No. of file in list>` |   Print a saved file  |    U  |
-| add_trusted `<username>` | Add new trusted user to list | AU|
-| add_admin `<username>` | Add new bot admin to list | AU|
+|   /list   |   List all the saved files    |   TU   |
+|   /print `<S.No. of file in list>` |   Print a saved file  |   TU  |
 |   Upload a file | Downloads and saves the file locally | TU |
-
+| /add_trusted `<username>` | Add new trusted user to list | AU |
+| /add_admin `<username>` | Add new bot admin to list | AU |

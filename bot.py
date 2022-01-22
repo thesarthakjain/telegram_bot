@@ -60,16 +60,16 @@ FOR ALL USERS:
 /start - Welcome message.
 /help - This message.
 /contact - How to reach out to me.
-/list - List all the saved files.
-/print - Print a saved file.
 /ig_dp - Download Instagram DP.
 
 FOR TRUSTED USERS:
+/list - List all the saved files.
+/print <S.No. of file> - Print a saved file.
 - Upload and save file.
 
 FOR BOT ADMIN:
-- add_trusted <username> - Add new trusted user to list.
-- add_admin <username> - Add new bot admin to list.
+/add_trusted <username> - Add new trusted user to list.
+/add_admin <username> - Add new bot admin to list.
 """)
 
 def contact(update, context):
@@ -118,7 +118,7 @@ def ig_dp(update, context):
     os.removedirs(username)
 
 ##################
-# Admin messages #
+# Admin commands #
 ##################
 
 # Function that can be run by  'add_trusted <new username>' by admin to add new trusted users.
@@ -160,13 +160,17 @@ def add_admin(update, context):
 def unknown(update, context):
     print("Unknown command used")
     update.message.reply_text("""
-    I did not understand that.
-    Try using /help
+I did not understand that.
+Try using /help
     """)
 
-def no_perm_file(update, context):
-    print("no_perm_file")
-    update.message.reply_text("You do not have permission to upload a file.")
+def not_trusted(update, context):
+    print("Not a trusted user")
+    update.message.reply_text("You are not a trusted user, ask the bot admin (/contact) to make you a trusted user.")
+
+def not_admin(update, context):
+    print("Not a bot admin")
+    update.message.reply_text("You are not a bot admin, ask the bot admin (/contact) to make you a bot admin.")
 
 ###################################
 # download file handler functions #
@@ -251,22 +255,30 @@ def audio_handler (update, context):
 
 updater = Updater(token, use_context=True)
 disp = updater.dispatcher
+
+### Public commands
 disp.add_handler(CommandHandler("start", start))
 disp.add_handler(CommandHandler("help", help))
 disp.add_handler(CommandHandler("contact", contact))
-disp.add_handler(CommandHandler("list", list))
-disp.add_handler(CommandHandler("print", print_file))
 disp.add_handler(CommandHandler("ig_dp",ig_dp))
 
-#add file handlers to dispatcher
-#check if user is in admin or in trusted_users else fall
-disp.add_handler(MessageHandler(Filters.document & Filters.chat(username=bot_admin) | Filters.document & Filters.chat(username=trusted_users), doc_handler))
-disp.add_handler(MessageHandler(Filters.photo & Filters.chat(username=bot_admin) | Filters.photo & Filters.chat(username=trusted_users), photo_handler))
-disp.add_handler(MessageHandler(Filters.video & Filters.chat(username=bot_admin) | Filters.video & Filters.chat(username=trusted_users), video_handler))
-disp.add_handler(MessageHandler(Filters.audio & Filters.chat(username=bot_admin) | Filters.audio & Filters.chat(username=trusted_users), audio_handler))
-disp.add_handler(MessageHandler(Filters.document | Filters.photo | Filters.video | Filters.audio, no_perm_file))
-disp.add_handler(MessageHandler(Filters.chat(username=bot_admin) & Filters.regex('add_trusted'), add_trusted))
-disp.add_handler(MessageHandler(Filters.chat(username=bot_admin) & Filters.regex('add_admin'), add_admin))
+### Trusted user commands
+disp.add_handler(CommandHandler("list", list, Filters.user(username=trusted_users)))
+disp.add_handler(CommandHandler("list", not_trusted))
+disp.add_handler(CommandHandler("print", print_file, Filters.user(username=trusted_users)))
+disp.add_handler(CommandHandler("print", not_trusted))
+# File handlers
+disp.add_handler(MessageHandler(Filters.document & Filters.chat(username=trusted_users), doc_handler))
+disp.add_handler(MessageHandler(Filters.photo & Filters.chat(username=trusted_users), photo_handler))
+disp.add_handler(MessageHandler(Filters.video & Filters.chat(username=trusted_users), video_handler))
+disp.add_handler(MessageHandler(Filters.audio & Filters.chat(username=trusted_users), audio_handler))
+disp.add_handler(MessageHandler(Filters.document | Filters.photo | Filters.video | Filters.audio, not_trusted))
+
+### Admin commands
+disp.add_handler(CommandHandler("add_trusted", add_trusted, Filters.user(username=bot_admin)))
+disp.add_handler(CommandHandler("add_trusted", not_admin))
+disp.add_handler(CommandHandler("add_admin", add_admin, Filters.user(username=bot_admin)))
+disp.add_handler(CommandHandler("add_admin", not_admin))
 
 
 #add message handlers to dispatcher

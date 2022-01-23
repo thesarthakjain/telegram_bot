@@ -94,7 +94,7 @@ def print_file(update, context):
     
     for item in items_list:
         if items_list.index(item)==inp:
-            os.system(f'lp ./saved/{item}')
+            os.system(f'lp "./saved/{item}"')
             break
     update.message.reply_text(f'printing {item}')
     print(f'printed {item}')
@@ -107,7 +107,7 @@ def print_range(update, context):
     
     for item in items_list:
         if items_list.index(item)==inp:
-            os.system(f'lp -o page-ranges={range} ./saved/{item}')
+            os.system(f'lp -o page-ranges={range} "./saved/{item}"')
             break
     update.message.reply_text(f'Printing {item} in the range {range} .')
     print(f'Printed {item} in the range {range} .')

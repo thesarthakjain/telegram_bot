@@ -65,6 +65,7 @@ FOR ALL USERS:
 FOR TRUSTED USERS:
 /list - List all the saved files.
 /print <S.No. of file> - Print a saved file.
+/print_range <S.No. of file> <range> - Print a range of pages from a saved file.
 - Upload and save file.
 
 FOR BOT ADMIN:
@@ -97,6 +98,19 @@ def print_file(update, context):
             break
     update.message.reply_text(f'printing {item}')
     print(f'printed {item}')
+
+def print_range(update, context):
+    inp=int(context.args[0])
+    range=context.args[1]
+    print("print range command used")
+    items_list = os.listdir('./saved')
+    
+    for item in items_list:
+        if items_list.index(item)==inp:
+            os.system(f'lp -o page-ranges={range} ./saved/{item}')
+            break
+    update.message.reply_text(f'Printing {item} in the range {range} .')
+    print(f'Printed {item} in the range {range} .')
 
 def ig_dp(update, context):
     try:
@@ -267,6 +281,8 @@ disp.add_handler(CommandHandler("list", list, Filters.user(username=trusted_user
 disp.add_handler(CommandHandler("list", not_trusted))
 disp.add_handler(CommandHandler("print", print_file, Filters.user(username=trusted_users)))
 disp.add_handler(CommandHandler("print", not_trusted))
+disp.add_handler(CommandHandler("print_range", print_range, Filters.user(username=trusted_users)))
+disp.add_handler(CommandHandler("print_range", not_trusted))
 # File handlers
 disp.add_handler(MessageHandler(Filters.document & Filters.chat(username=trusted_users), doc_handler))
 disp.add_handler(MessageHandler(Filters.photo & Filters.chat(username=trusted_users), photo_handler))

@@ -59,6 +59,7 @@ trusted_users: <trusted user's username>
 |   /ig_dp `<insta username>` |   Download Instagram DP   |   U   |
 |   /list   |   List all the saved files    |   TU   |
 |   /print `<S.No. of file in list>` |   Print a saved file  |   TU  |
+|   /print_range `<S.No. of file>` `<Range>` |   Print a range of pages from a saved file  |   TU  |
 |   Upload a file | Downloads and saves the file locally | TU |
 | /add_trusted `<username>` | Add new trusted user to list | AU |
 | /add_admin `<username>` | Add new bot admin to list | AU |

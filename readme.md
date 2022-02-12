@@ -26,13 +26,13 @@ This is a telegram bot that can be used as a template for personal telegram bot.
 
 3. Creating `config.yaml` file manually - This step could be skipped as running the bot without this file will automatically generate it for you.
 
-```yaml
-token: <put the bot token here>
-bot_admin: <bot admin username>
-trusted_users: <trusted user's username>
-```
-The `bot.py` will also generate the `saved` folder inside the project directory. 
-All the files that the trusted_users and admins send to the bot via telegram chat will be stored here.
+	```yaml
+	token: <put the bot token here>
+	bot_admin: <bot admin username>
+	trusted_users: <trusted user's username>
+	```
+	The `bot.py` will also generate the `saved` folder inside the project directory. 
+	All the files that the trusted_users and admins send to the bot via telegram chat will be stored here.
 
 4. Run the bot: 
 

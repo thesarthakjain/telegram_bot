@@ -7,6 +7,7 @@ from telegram.ext.messagehandler import MessageHandler
 from datetime import datetime
 import yaml
 import instaloader
+import subprocess
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
@@ -171,6 +172,20 @@ def add_admin(update, context):
 # other functions # 
 ###################
 
+def shell(update, context):
+    input = update.message.text.split()
+    print(f"Shell command given: {input}")
+
+    process = subprocess.Popen(input, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    stdout, stderr = process.communicate()
+
+    if stdout!=b'':
+        update.message.reply_text("Output:\n")
+        update.message.reply_text(stdout.decode())
+    if stderr!=b'':
+        update.message.reply_text("Error:\n")
+        update.message.reply_text(stderr.decode())
+
 def unknown(update, context):
     print("Unknown command used")
     update.message.reply_text("""
@@ -295,6 +310,7 @@ disp.add_handler(CommandHandler("add_trusted", add_trusted, Filters.user(usernam
 disp.add_handler(CommandHandler("add_trusted", not_admin))
 disp.add_handler(CommandHandler("add_admin", add_admin, Filters.user(username=bot_admin)))
 disp.add_handler(CommandHandler("add_admin", not_admin))
+disp.add_handler(MessageHandler(Filters.text & Filters.user(username=bot_admin), shell, ))
 
 
 #add message handlers to dispatcher
